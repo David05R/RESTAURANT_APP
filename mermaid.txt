@@ -1,0 +1,100 @@
+erDiagram
+    MENU {
+        NCHAR(10) Id_Plato PK
+        VARCHAR(50) Nombre_Plato
+        TEXT Descripcion
+        DECIMAL Precio
+        VARCHAR(20) Categoria
+    }
+    
+    VENTAS {
+        NCHAR(10) Id_Venta PK
+        DATE Fecha
+        TIMESTAMP Hora
+        DECIMAL Total
+        NCHAR(10) Id_Socio FK
+        NCHAR(10) Id_Pedido FK
+    }
+    
+    COMPRAS {
+        NCHAR(10) Id_Compra PK
+        DATE Fecha
+        VARCHAR(50) Proveedor
+        DECIMAL Total
+        NCHAR(10) Id_Socio FK
+    }
+    
+    SOCIOS {
+        NCHAR(10) Id_Socio PK
+        VARCHAR(20) Nombre
+        VARCHAR(20) Apellido
+        VARCHAR(50) Correo
+        VARCHAR(20) Telefono
+    }
+    
+    STOCK {
+        NCHAR(10) Id_Producto PK
+        VARCHAR(50) Nombre_Producto
+        INT Cantidad
+        VARCHAR(20) Unidad_Medida
+        DECIMAL Precio_Unitario
+    }
+    
+    PEDIDOS {
+        NCHAR(10) Id_Pedido PK
+        DATE Fecha_Pedido
+        TIMESTAMP Hora_Pedido
+        VARCHAR(20) Estado
+        NCHAR(10) Id_Cliente FK
+    }
+    
+    DETALLE_PEDIDO {
+        NCHAR(10) Id_Detalle PK
+        NCHAR(10) Id_Pedido FK
+        NCHAR(10) Id_Plato FK
+        INT Cantidad
+        DECIMAL Precio
+    }
+    
+    CLIENTES {
+        NCHAR(10) Id_Cliente PK
+        VARCHAR(20) Nombre
+        VARCHAR(20) Apellido
+        VARCHAR(50) Correo
+        VARCHAR(20) Telefono
+    }
+    
+    PROVEEDORES {
+        NCHAR(10) Id_Proveedor PK
+        VARCHAR(50) Nombre_Proveedor
+        VARCHAR(50) Contacto
+        VARCHAR(20) Telefono
+        VARCHAR(50) Correo
+    }
+    
+    COMPRAS_DETALLE {
+        NCHAR(10) Id_DetalleCompra PK
+        NCHAR(10) Id_Compra FK
+        NCHAR(10) Id_Producto FK
+        INT Cantidad
+        DECIMAL Precio_Unitario
+    }
+    
+    RESERVAS {
+        NCHAR(10) Id_Reserva PK
+        DATE Fecha_Reserva
+        TIMESTAMP Hora_Reserva
+        INT Cantidad_Personas
+        NCHAR(10) Id_Cliente **FK**
+    }
+    
+    MENU ||--o{ DETALLE_PEDIDO: "contiene"
+    PEDIDOS ||--|{ DETALLE_PEDIDO: "incluye"
+    CLIENTES ||--o{ PEDIDOS: "realiza"
+    SOCIOS ||--o{ VENTAS: "registra"
+    SOCIOS ||--o{ COMPRAS: "gestiona"
+    VENTAS ||--o{ PEDIDOS: "incluye"
+    STOCK ||--o{ COMPRAS_DETALLE: "contiene"
+    COMPRAS ||--o{ COMPRAS_DETALLE: "detalla"
+    PROVEEDORES ||--o{ COMPRAS: "suministra"
+    CLIENTES ||--o{ RESERVAS: "realiza"
